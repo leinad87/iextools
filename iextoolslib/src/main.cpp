@@ -53,6 +53,8 @@ int main(int argc, char* argv[]) {
     } else {
       // no flag, then it is interpret as a path
       if (std::filesystem::exists(arg)) {
+          IEXTools::TopsReader tops(arg);
+
         return 0;
       } else {
         std::cerr << "File '" << arg << "' does not exist.\n";

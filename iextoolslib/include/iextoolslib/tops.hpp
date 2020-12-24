@@ -13,7 +13,7 @@
 
 namespace IEXTools {
 struct TopsReader {
-  TopsReader(const std::string& file_path);
+  explicit TopsReader(const std::string& file_path);
 
  private:
   std::vector<TopsMessage> get_messages();
