@@ -1,6 +1,7 @@
 #include <iextoolslib/pcap_frames.hpp>
 #include <iextoolslib/pcap_utils.hpp>
 #include <iostream>
+#include <utility>
 
 using namespace IEXTools;
 
@@ -81,7 +82,7 @@ UDPFrame UDPFrame::read_from_block(pcap_cit_t& it) {
 
 IexTpFrame::IexTpFrame(Byte version, Short message_protocol_id, Integer channel_id, Integer session_id,
                        Short payload_length, Short message_count, Long stream_offset,
-                       Long first_message_sequence_number, Timestamp send_time)
+                       Long first_message_sequence_number, Timestamp send_time, pcap_cit_t data_it)
     : version(version),
       message_protocol_id(message_protocol_id),
       channel_id(channel_id),
@@ -90,7 +91,7 @@ IexTpFrame::IexTpFrame(Byte version, Short message_protocol_id, Integer channel_
       message_count(message_count),
       stream_offset(stream_offset),
       first_message_sequence_number(first_message_sequence_number),
-      send_time(send_time) {}
+      send_time(send_time), data_it(data_it) {}
 
 IexTpFrame IexTpFrame::read_from_block(pcap_cit_t& it) {
   auto version = read_bytes<Byte>(it);
@@ -105,23 +106,23 @@ IexTpFrame IexTpFrame::read_from_block(pcap_cit_t& it) {
   auto send_time = read_bytes<Long>(it);
 
   return IexTpFrame(version, message_protocol_id, channel_id, session_id, payload_length, message_count, stream_offset,
-                    first_message_sequence_number, send_time);
+                    first_message_sequence_number, send_time, it);
 }
 
 PcapBlock::PcapBlock(pcap_cit_t it_begin, pcap_cit_t it_end) : begin(it_begin), end(it_end) {}
 
 EnhancedPacketBlock::EnhancedPacketBlock(pcap_cit_t begin, pcap_cit_t end, uint32_t interface_id, double timestamp,
                                          uint32_t captured_packet_length, uint32_t original_packet_length,
-                                         EthernetFrame ethernet, IPv4Frame ip, UDPFrame udp, IexTpFrame iex_tp)
+                                         EthernetFrame ethernet, IPv4Frame ip, UDPFrame udp, IexTpFrame iex_tps)
     : PcapBlock(begin, end),
       interface_id(interface_id),
       timestamp(timestamp),
       captured_packet_length(captured_packet_length),
       original_packet_length(original_packet_length),
-      ethernet(ethernet),
+      ethernet(std::move(ethernet)),
       ip(ip),
       udp(udp),
-      iex_tp(iex_tp) {}
+      iex_tp(std::move(iex_tps)) {}
 
 PcapFrame::PcapFrame(int type, unsigned frame_number, size_t frame_length, pcap_cit_t iterator,
                      std::unique_ptr<PcapBlock> block)

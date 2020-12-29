@@ -5,9 +5,9 @@
 #ifndef IEX_TOOLS_TOPS_HPP
 #define IEX_TOOLS_TOPS_HPP
 
-#include <string>
 #include <vector>
-
+#include <map>
+#include <memory>
 #include "pcap.hpp"
 #include "tops_messages.hpp"
 
@@ -15,12 +15,16 @@ namespace IEXTools {
 struct TopsReader {
   explicit TopsReader(const std::string& file_path);
 
- private:
-  std::vector<TopsMessage> get_messages();
+  void parse_data();
 
-  const std::string file_path;
+ private:
+
+  std::vector<std::unique_ptr<TopsMessage>> get_messages(EnhancedPacketBlock* packet);
+
   PcapReader pcap;
-  std::vector<TopsMessage> messages;
+  std::map<std::string, std::vector<std::string>> data;
+
+  void dump_files() const;
 };
 
 }  // namespace IEXTools

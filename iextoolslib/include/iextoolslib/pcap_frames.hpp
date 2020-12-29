@@ -56,7 +56,7 @@ struct UDPFrame {
 
 struct IexTpFrame {
   IexTpFrame(Byte version, Short message_protocol_id, Integer channel_id, Integer session_id, Short payload_length,
-             Short message_count, Long stream_offset, Long first_message_sequence_number, Timestamp send_time);
+             Short message_count, Long stream_offset, Long first_message_sequence_number, Timestamp send_time, pcap_cit_t data_it);
 
   const Byte version;
   const Short message_protocol_id;
@@ -67,6 +67,7 @@ struct IexTpFrame {
   const Long stream_offset;
   const Long first_message_sequence_number;
   const Timestamp send_time;
+  const pcap_cit_t data_it;
 
   static IexTpFrame read_from_block(pcap_cit_t& it);
 };

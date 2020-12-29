@@ -31,8 +31,10 @@ void swap_endian(T& val) {
   val = dst.val;
 }
 
+std::string symbol_to_string(Symbol symbol);
 std::string mac_addr_formatter(std::array<std::byte, 6> addr);
 std::string ip_addr_formatter(uint32_t addr);
+double price_to_double(Price price);
 
 }  // namespace IEXTools
 

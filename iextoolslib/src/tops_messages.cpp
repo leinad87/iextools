@@ -94,7 +94,7 @@ std::unique_ptr<SystemEventMessage> SystemEventMessage::from_raw_message(pcap_ci
   return std::unique_ptr<SystemEventMessage>();
 }
 
-TradeReportMessage::TradeReportMessage(Byte flags, Timestamp timestamp, Symbol symbol, Integer size, Price price,
+TradeReportMessage::TradeReportMessage(Byte flags, Timestamp timestamp, Symbol symbol, Integer size, double price,
                                        Long trade_id)
     : TopsMessage(TradeReportType),
       flags(flags),
@@ -152,7 +152,7 @@ std::unique_ptr<TradeReportMessage> TradeReportMessage::from_raw_message(pcap_ci
   auto timestamp = read_bytes<Timestamp>(it);
   auto symbol = read_bytes<Symbol>(it);
   auto size = read_bytes<Integer>(it);
-  auto price = read_bytes<Price>(it);
+  auto price = price_to_double(read_bytes<Price>(it));
   auto trade_id = read_bytes<Long>(it);
 
   return std::make_unique<TradeReportMessage>(flags, timestamp, symbol, size, price, trade_id);

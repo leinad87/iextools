@@ -128,13 +128,13 @@ struct SystemEventMessage : public TopsMessage {
 };
 
 struct TradeReportMessage : public TopsMessage {
-  TradeReportMessage(Byte flags, Timestamp timestamp, Symbol symbol, Integer size, Price price, Long trade_id);
+  TradeReportMessage(Byte flags, Timestamp timestamp, Symbol symbol, Integer size, double price, Long trade_id);
 
   const Byte flags;
   const Timestamp timestamp;
   const Symbol symbol;
   const Integer size;
-  const Price price;
+  const double price;
   const Long trade_id;
 
   static std::unique_ptr<TradeReportMessage> from_raw_message(pcap_cit_t it);

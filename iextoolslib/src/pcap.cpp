@@ -95,31 +95,6 @@ std::unique_ptr<EnhancedPacketBlock> PcapReader::get_enhanced_packet_block(pcap_
 
   auto transport = UDPFrame::read_from_block(it_begin);
   auto iex = IexTpFrame::read_from_block(it_begin);
-  std::vector<std::unique_ptr<TopsMessage>> messages;
-
-  if (iex.payload_length > 0 && iex.message_count > 0) {
-    auto data_read = 0;
-    auto it{it_begin};
-
-    messages.reserve(iex.message_count);
-
-    for (int i = 0; i < iex.message_count; ++i) {
-      auto message_length = read_bytes<Short>(it);
-      data_read += sizeof(message_length);
-
-      // TODO: allow other IEX messages apart from TOPS
-      messages.emplace_back(TopsMessage::read_message(it));
-
-      it += message_length;
-      data_read += message_length;
-    }
-
-    if (data_read != iex.payload_length) {
-      std::cerr << "IEX-TP messages error: " << data_read << "!=" << iex.payload_length << std::endl;
-
-      std::exit(1);
-    }
-  }
 
   if (it_begin >= it_end) {
     // TODO: manage situation
