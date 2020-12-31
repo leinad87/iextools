@@ -1,7 +1,3 @@
-//
-// Created by Juan on 24/12/2020.
-//
-
 #ifndef IEX_TOOLS_IEXTOOLS_HPP
 #define IEX_TOOLS_IEXTOOLS_HPP
 

@@ -7,18 +7,12 @@
 #include <tuple>
 #include <vector>
 
-void iex_tops_run();
 void print_version();
 void print_help();
 
 std::vector<std::tuple<std::string, std::string, std::string, std::function<void(void)>>> opts{
     {"-h", "--help", "display this help and exit", print_help},
     {"-v", "--version", "output version information and exit", print_version}};
-
-void iex_tops_run() {
-  using namespace IEXTools;
-  TopsReader reader("/Users/juan/Downloads/test.pcap");
-}
 
 void print_version() {
   using namespace IEXTools;
@@ -28,7 +22,7 @@ void print_version() {
 void print_help() {
   using namespace std;
 
-  cout << "Usage: iex-tools [FILE]\n";
+  cout << "Usage: iex-tools [FILE] [OUT_DIR]\n";
   cout << "Parses a pcap-ng dump file containing IEX TOPS data.\n\n";
 
   for (const auto& opt : opts) {
@@ -39,25 +33,30 @@ void print_help() {
 }
 
 int main(int argc, char* argv[]) {
-  if (argc == 2) {
-    std::string arg{argv[1]};
+  if (argc == 3) {
+    std::string arg1{argv[1]};
+    std::string arg2{argv[2]};
 
-    if (arg.starts_with("-")) {
+    if (arg1.starts_with("-")) {
       for (const auto& opt : opts) {
         const auto& [short_flag, flag, description, func] = opt;
-        if (arg == short_flag || arg == flag) {
+        if (arg1 == short_flag || arg1 == flag) {
           func();
           return 0;
         }
       }
     } else {
       // no flag, then it is interpret as a path
-      if (std::filesystem::exists(arg)) {
-          IEXTools::TopsReader tops(arg);
-
-        return 0;
+      if (std::filesystem::exists(arg1)) {
+        if (std::filesystem::exists(arg2) && std::filesystem::is_directory(arg2) && std::filesystem::is_empty(arg2)) {
+          IEXTools::TopsReader tops(arg1, arg2);
+          return 0;
+        } else {
+          std::cerr << "Out dir '" << arg2 << "' must be an valid empty directory.\n";
+          return 1;
+        }
       } else {
-        std::cerr << "File '" << arg << "' does not exist.\n";
+        std::cerr << "File '" << arg1 << "' does not exist.\n";
         return 1;
       }
     }

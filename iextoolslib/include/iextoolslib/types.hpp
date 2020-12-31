@@ -1,13 +1,9 @@
-//
-// Created by Juan on 24/12/2020.
-//
-
 #ifndef IEX_TOOLS_TYPES_HPP
 #define IEX_TOOLS_TYPES_HPP
 
 #include <array>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace IEXTools {
 

@@ -3,9 +3,8 @@
 
 #include <array>
 #include <cstring>
+#include <iextoolslib/types.hpp>
 #include <string>
-
-#include "types.hpp"
 
 namespace IEXTools {
 

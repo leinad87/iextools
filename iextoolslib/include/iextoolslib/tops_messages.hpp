@@ -2,13 +2,12 @@
 #define __IEXTOOLSLIB_TOPS_HPP__
 
 #include <array>
+#include <iextoolslib/pcap.hpp>
+#include <iextoolslib/types.hpp>
 #include <memory>
 #include <regex>
 #include <string>
 #include <vector>
-
-#include "pcap.hpp"
-#include "types.hpp"
 
 namespace IEXTools {
 

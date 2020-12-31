@@ -91,7 +91,8 @@ IexTpFrame::IexTpFrame(Byte version, Short message_protocol_id, Integer channel_
       message_count(message_count),
       stream_offset(stream_offset),
       first_message_sequence_number(first_message_sequence_number),
-      send_time(send_time), data_it(data_it) {}
+      send_time(send_time),
+      data_it(data_it) {}
 
 IexTpFrame IexTpFrame::read_from_block(pcap_cit_t& it) {
   auto version = read_bytes<Byte>(it);

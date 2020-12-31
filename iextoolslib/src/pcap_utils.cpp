@@ -2,8 +2,8 @@
 #include <cstddef>
 #include <iextoolslib/pcap_utils.hpp>
 #include <iomanip>
-#include <sstream>
 #include <regex>
+#include <sstream>
 
 using namespace IEXTools;
 
@@ -31,6 +31,4 @@ std::string IEXTools::ip_addr_formatter(uint32_t addr) {
   return ss.str();
 }
 
-double IEXTools::price_to_double(Price price) {
-  return price * 1e-4;
-}
+double IEXTools::price_to_double(Price price) { return price * 1e-4; }
