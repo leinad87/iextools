@@ -20,15 +20,13 @@ struct Opts {
   void operator=(Opts const&) = delete;
 
  private:
-  Opts() : opts({
-    {"-h", "--help", "display this help and exit", print_help},
-    {"-v", "--version", "output version information and exit", print_version}}) {}
+  Opts()
+      : opts({{"-h", "--help", "display this help and exit", print_help},
+              {"-v", "--version", "output version information and exit", print_version}}) {}
 
  public:
   std::vector<std::tuple<std::string, std::string, std::string, std::function<void(void)>>> opts;
 };
-
-
 
 void print_version() {
   using namespace IEXTools;
