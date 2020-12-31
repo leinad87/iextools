@@ -10,9 +10,25 @@
 void print_version();
 void print_help();
 
-std::vector<std::tuple<std::string, std::string, std::string, std::function<void(void)>>> opts{
+struct Opts {
+  static Opts& instance() {
+    static Opts _instance;
+    return _instance;
+  }
+
+  Opts(Opts const&) = delete;
+  void operator=(Opts const&) = delete;
+
+ private:
+  Opts() : opts({
     {"-h", "--help", "display this help and exit", print_help},
-    {"-v", "--version", "output version information and exit", print_version}};
+    {"-v", "--version", "output version information and exit", print_version}}) {}
+
+ public:
+  std::vector<std::tuple<std::string, std::string, std::string, std::function<void(void)>>> opts;
+};
+
+
 
 void print_version() {
   using namespace IEXTools;
@@ -24,6 +40,8 @@ void print_help() {
 
   cout << "Usage: iex-tools [FILE] [OUT_DIR]\n";
   cout << "Parses a pcap-ng dump file containing IEX TOPS data.\n\n";
+
+  auto opts = Opts::instance().opts;
 
   for (const auto& opt : opts) {
     const auto& [short_flag, flag, description, func] = opt;
@@ -37,6 +55,7 @@ int main(int argc, char* argv[]) {
     std::string arg1{argv[1]};
     std::string arg2{argv[2]};
 
+    auto opts = Opts::instance().opts;
     if (arg1.starts_with("-")) {
       for (const auto& opt : opts) {
         const auto& [short_flag, flag, description, func] = opt;
