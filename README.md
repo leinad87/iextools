@@ -1,5 +1,6 @@
-# IEX-Tools
-This is a work-in-progress tool for extracting information from historical IEX data.
+# IEX Market Data Tool
+This is a work-in-progress tool for extracting information from market data provided by IEX. Currently only TOPS v1.6 
+data is supported for extracting trading operations.
 
 ## Compile
 
